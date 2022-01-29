@@ -27,7 +27,7 @@ def med_movil_simple(activo,intervalo,cant_velas):                              
         if len(data_historical) <= 200:
             for i in range(0, int(cant_velas)):
                 sumatoria += float(data_historical[i][4])
-                print(data_historical[i])
+                
     
     elif intervalo == 4:
         intervalo = KLINE_INTERVAL_4HOUR
@@ -36,7 +36,7 @@ def med_movil_simple(activo,intervalo,cant_velas):                              
         if len(data_historical) <= 200:
             for i in range(0, cant_velas):
                 sumatoria += float(data_historical[i][4])
-                print(data_historical[i])
+                
     
     elif intervalo == 12:
         intervalo = KLINE_INTERVAL_12HOUR
@@ -45,22 +45,72 @@ def med_movil_simple(activo,intervalo,cant_velas):                              
         if len(data_historical) <= 200:
             for i in range(0, int(cant_velas)):
                 sumatoria += float(data_historical[i][4])
-                print(data_historical[i])
+                
         
     sma = (sumatoria / cant_velas)
-    return print('La media movil simple de ' + cant_velas_str + ' periodos es: ',sma,)
+    print('La media movil simple de ',cant_velas_str ,'periodos es: ',sma)
+    return (sma)
 
-def ultimas_24hs():
-    data_24hs = pd.DataFrame(cliente.get_ticker())
-    print(data_24hs)
+def med_movil_exponencial(activo,intervalo,cant_velas):
+    
+    horas = intervalo * cant_velas
+    lista_precios_cierre = []
+    ema = []
+    
+    sma = med_movil_simple(activo,intervalo,cant_velas)
+    ema.append(sma)
+    
+    if intervalo == 1:
+        intervalo = KLINE_INTERVAL_1HOUR
+        data_historical = cliente.get_historical_klines(activo,intervalo,str(cant_velas) + 'hours ago')
+        
+        if len(data_historical) <= 200:
+            
+            for i in range(len(data_historical)):
+                lista_precios_cierre.append(float(data_historical[i][4]))
+            
+            for price in lista_precios_cierre:
+                ema.append((price * (2 / (cant_velas + 1))) + ema[-1] * (1 - (2 /(cant_velas + 1))))
+            
+            ema_valor = round(ema.pop(),4)
+    
+    if intervalo == 4:
+        intervalo = KLINE_INTERVAL_4HOUR
+        data_historical = cliente.get_historical_klines(activo,intervalo,str(horas) + 'hours ago')
+        
+        if len(data_historical) <= 200:
+            
+            for i in range(len(data_historical)):
+                lista_precios_cierre.append(float(data_historical[i][4]))
+            
+            for price in lista_precios_cierre:
+                ema.append((price * (2 / (cant_velas + 1))) + ema[-1] * (1 - (2 /(cant_velas + 1))))
+            
+            ema_valor = round(ema.pop(),4)
+
+    if intervalo == 12:
+        intervalo = KLINE_INTERVAL_12HOUR
+        data_historical = cliente.get_historical_klines(activo,intervalo,str(horas) + 'hours ago')
+        
+        if len(data_historical) <= 200:
+            
+            for i in range(len(data_historical)):
+                lista_precios_cierre.append(float(data_historical[i][4]))
+            
+            for price in lista_precios_cierre:
+                ema.append((price * (2 / (cant_velas + 1))) + ema[-1] * (1 - (2 /(cant_velas + 1))))
+            
+            ema_valor = ema.pop
+    print('La media movil exponencial de ',cant_velas_str , 'periodos es: ',ema_valor)
+    return ema_valor
 
 if __name__ == '__main__':
     print('Bienvenidos al Bot Financiero!\n')
 
     print('A continuación te presentamos los posibles pares a operar:')
-    todos_los_pares()
-    lista_de_pares = pd.DataFrame(cliente.get_all_tickers())
-    print(lista_de_pares)
+    #todos_los_pares()
+    #lista_de_pares = pd.DataFrame(cliente.get_all_tickers())
+    #print(lista_de_pares)
     activo = str(input('Que activo desea operar?' ))
     
     print('1. Intervalo de 1 hora')
@@ -74,8 +124,8 @@ if __name__ == '__main__':
     cant_velas = int(input('Que cantidad de velas queres visualizar?  '))
     cant_velas_str = str(cant_velas)
 
-    med_movil_simple(activo,intervalo,cant_velas)
+    #med_movil_simple(activo,intervalo,cant_velas)
     print('----------------------------------------------------')
-    ultimas_24hs()
-    # MODIFICAR LA TABLA DE ACTIVOS PARA QUE MUESTREN TODOS LOS DATOS, ASI PODER HACER EL ANALISIS DE LAS ESTRATEGIAS.
-    # HACER UN FILL() CSV,WRITER PARA LLENAR UNA BASE DE DATOS Y PODER ANALIZAR QUE ACTIVOS CUMPLEN CON EL PATRON Y CUALES NO.
+    med_movil_exponencial(activo,intervalo,cant_velas)
+    
+    # SI EL PRECIO SE MUEVE MAS DE UN 3% EN UNA HORA EL ACTIVO TIENDE A REBOTAR
