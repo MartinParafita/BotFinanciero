@@ -1,67 +1,53 @@
 
-
-
-
-from operator import contains
-from flask import session
-from matplotlib import ticker
-from matplotlib.axis import Ticker
-import sqlalchemy
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, column
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from flask_sqlalchemy import SQLAlchemy
 from binance.client import Client
 from binance.enums import *
+
 
 API_KEY = 'cidV4hzfstUlcvQh5v7ciaA7vSmmaWdHzfomQhESZJRiLqsN5PKEKmADgsgkPUEK'        #NOMBRE DE LA API DE BINANCE
 API_SECRET = 'Ddju4c7rg8U9GfypjTXrl9fSvOrXo0c0LXLZfp6yne2FZ2HiWc0brjIWOEd75RUH'
 cliente = Client(API_KEY,API_SECRET, tld = 'com')  
 
+db = SQLAlchemy()
 
-engine = sqlalchemy.create_engine("sqlite:///usuarios_activos.db")
-base = declarative_base()
 
-class Usuarios(base):
+class Usuarios(db.Model):
     __tablename__ = 'usuarios'
-    id = Column(Integer, primary_key=True)
-    nombre = Column(String)
-    apellido = Column(String)
+    id = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String)
+    apellido = db.Column(db.String)
 
     def __repr__(self):
         return f"Su numero de usuario es: {self.id}"
 
 
-class Datos(base):
+class Datos(db.Model):
     __tablename__ = 'prueba'
-    symbol = Column(String, primary_key=True)
-    priceChange = Column(Float)
-    priceChangePercent = Column(Float)
-    prevClosePrice = Column(Float)
-    lastPrice = Column(Float)
-    openPrice = Column(Float)
-    highPrice = Column(Float)
-    lowPrice = Column(Float)
-    volume = Column(Float)
-    openTime = Column(Integer)
-    closeTime = Column(Integer)
-    count = Column(Integer)
+    symbol = db.Column(db.String, primary_key=True)
+    priceChange = db.Column(db.Float)
+    priceChangePercent = db.Column(db.Float)
+    prevClosePrice = db.Column(db.Float)
+    lastPrice = db.Column(db.Float)
+    openPrice = db.Column(db.Float)
+    highPrice = db.Column(db.Float)
+    lowPrice = db.Column(db.Float)
+    volume = db.Column(db.Float)
+    openTime = db.Column(db.Integer)
+    closeTime = db.Column(db.Integer)
+    count = db.Column(db.Integer)
 
     def __repr__(self):
         return self.symbol
 
-def crear_tablas():
-    base.metadata.drop_all(engine)
-    base.metadata.create_all(engine)
 
 def insert_usuario(nombre, apellido):
+    if (nombre,apellido) is not Usuarios:
+        person = Usuarios(nombre=nombre, apellido=apellido)
+        db.session.add(person)
+        db.session.commit()
+    else:
+        print('El usuario ya existe')
     
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    person = Usuarios(nombre=nombre, apellido=apellido)
-    session.add(person)
-    session.commit()
-    print(person)
-
     
 def insert_datos():
     data = cliente.get_ticker()
@@ -69,8 +55,6 @@ def insert_datos():
     for i in data:
         if "USDT" in i['symbol']:
             lista_USDT.append(i)
-    Session = sessionmaker(bind=engine)
-    session = Session()
     for i in lista_USDT:
         d = i
         symbol = d['symbol']
@@ -86,14 +70,14 @@ def insert_datos():
         closeTime = int(d['closeTime'])
         count = int(d['count'])
         info = Datos(symbol=symbol, priceChange=priceChange,priceChangePercent=priceChangePercent,prevClosePrice=prevClosePrice,lastPrice=lastPrice,openPrice=openPrice,highPrice=highPrice,lowPrice=lowPrice,volume=volume,openTime=openTime,closeTime=closeTime,count=count)
-        session.add(info)
-        session.commit()
+        db.session.add(info)
+        db.session.commit()
+    return d
+
 
 
 if __name__ == '__main__':
     
-    crear_tablas()
     insert_usuario('Martin','Parafita')
     insert_datos()
-    
     

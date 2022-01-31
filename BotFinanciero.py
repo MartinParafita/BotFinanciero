@@ -11,8 +11,12 @@ API_SECRET = 'Ddju4c7rg8U9GfypjTXrl9fSvOrXo0c0LXLZfp6yne2FZ2HiWc0brjIWOEd75RUH' 
 cliente = Client(API_KEY,API_SECRET, tld = 'com')                                   #NOS CONECTAMOS CON LA API DE BINANCE
 
 def todos_los_pares():                                                              #PRESENTAMOS TODOS LOS PARES DISPONIBLES
-    lista_de_pares = pd.DataFrame(cliente.get_all_tickers())
-    return lista_de_pares
+    lista_de_pares = cliente.get_ticker()
+    lista_USDT = []
+    for i in lista_de_pares:
+        if "USDT" in i['symbol']:
+            lista_USDT.append(i)
+    return lista_USDT
 
 def med_movil_simple(activo,intervalo,cant_velas):                                  #ES UN INDICADOR DEL PRECIO MEDIO DEL ACTIVO EN UN PERIODO DETERMINADO
     

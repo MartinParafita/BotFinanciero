@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Estrategias</title>
+    </head>
+        <body>
+            <h1>Estrategias</h1>
+            <p>Vamos a definir 3 parametros fundamentales</p>
+            <h2>Activo</h2>
+            <h2>Intervalo</h2>
+            <h2>Cantidad de velas</h2>
+            <form method="POST" action="{{url_for('estrategias')}}">
+                <label>Activo</label>
+                <br>
+                <input type="text" name='symbol'>
+                <br>
+                <label>Intervalo</label>
+                <br>
+                <input type="number" name='intervalo'>
+                <br>
+                <label>Cantidad de velas</label>
+                <br>
+                <input type="number" name='cant_velas'>
+                <br>
+                <br>
+                <input type="button" value="Enviar">
+            </form>
+        </body>
+</html>
