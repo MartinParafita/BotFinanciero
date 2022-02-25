@@ -10,13 +10,13 @@ API_SECRET = 'Ddju4c7rg8U9GfypjTXrl9fSvOrXo0c0LXLZfp6yne2FZ2HiWc0brjIWOEd75RUH' 
 
 cliente = Client(API_KEY,API_SECRET, tld = 'com')                                   #NOS CONECTAMOS CON LA API DE BINANCE
 
-def todos_los_pares():                                                              #PRESENTAMOS TODOS LOS PARES DISPONIBLES
+def pares():                                                              #PRESENTAMOS TODOS LOS PARES DISPONIBLES
     lista_de_pares = cliente.get_ticker()
     lista_USDT = []
     for i in lista_de_pares:
         if "USDT" in i['symbol']:
             lista_USDT.append(i)
-    return lista_USDT
+    return (lista_USDT)
 
 def med_movil_simple(activo,intervalo,cant_velas):                                  #ES UN INDICADOR DEL PRECIO MEDIO DEL ACTIVO EN UN PERIODO DETERMINADO
     
@@ -104,7 +104,7 @@ def med_movil_exponencial(activo,intervalo,cant_velas):                         
             
             for price in lista_precios_cierre:
                 ema.append((price * (2 / (cant_velas + 1))) + ema[-1] * (1 - (2 /(cant_velas + 1))))
-            
+            print(ema_valor)
             ema_valor = ema.pop
     print('La media movil exponencial de ',cant_velas_str , 'periodos es: ',ema_valor)
     return ema_valor
@@ -113,9 +113,14 @@ if __name__ == '__main__':
     print('Bienvenidos al Bot Financiero!\n')
 
     print('A continuación te presentamos los posibles pares a operar:')
-    todos_los_pares()
-    lista_de_pares = pd.DataFrame(cliente.get_all_tickers())
-    print(lista_de_pares)
+    pares()
+    lista = cliente.get_all_tickers()
+    lista_USDT = []
+    for i in lista:
+        if "USDT" in i['symbol']:
+            lista_USDT.append(i)
+    print(pd.DataFrame(lista_USDT))
+    
     activo = str(input('Que activo desea operar?' ))
     
     print('1. Intervalo de 1 hora')
@@ -129,7 +134,7 @@ if __name__ == '__main__':
     cant_velas = int(input('Que cantidad de velas queres visualizar?  '))
     cant_velas_str = str(cant_velas)
 
-    med_movil_simple(activo,intervalo,cant_velas)
+    #med_movil_simple(activo,intervalo,cant_velas)
     print('----------------------------------------------------')
     med_movil_exponencial(activo,intervalo,cant_velas)
     

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Bot Financiero</title>
+        <link rel="icon" href="Bot.ico"
+    </head>
+    <body>
+        <h2>Formulario de registro</h2>
+        <form method= "POST" action="{{url_for('registro')}}">
+            <label>Nombre:</label><br>
+            <input type="text" nombre="Nombre"><br>
+            <label>Apellido:</label><br>
+            <input type="text" apellido="Apellido"><br>
+            <br>
+            <input type="submit" value="Enviar">   
+        </form>
+        <h4>Ya estas registrado!</h4>
+        <p>Para ver los <b>pares</b> disponibles hace click <a href="{{url_for('pares')}}">aqui</a>.</p>
+    </body>
+</html>

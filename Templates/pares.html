@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Bot Financiero</title>
+        <link rel="icon" href="Bot.ico">
+    </head>
+    <body>
+        <h1>Pares</h1>
+        <h3>En esta tabla figuran todas las criptomonedas comparadas con el dólar</h3>
+        <ul>
+            {% for i in lista_USDT %}
+            <li>{{ c }}</li>
+            {% end for%}
+        </ul>
+        <table border="1px">
+                <tr>
+                    <th>symbol</th>
+                    <th>price</th>
+                </tr>
+                <tr>
+                    <th>{{row['symbol']}}</th>
+                    <th>{{row['price']}}</th>
+                </tr>
+        </table>
+    </body>
+        
+</html>

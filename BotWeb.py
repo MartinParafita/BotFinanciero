@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify, render_template, Response, redirect
 from flask_sqlalchemy import SQLAlchemy
 from BotFinanciero import med_movil_simple
 from BotFinanciero import med_movil_exponencial
-from BotFinanciero import todos_los_pares
+from BotFinanciero import pares
 from binance.client import Client
 from binance.enums import *
 import sqlalchemy
@@ -25,18 +25,16 @@ def index():
         return jsonify({'trace': traceback.format_exc()})
 
 @app.route("/registro", methods=['GET', 'POST'])
-def login():
+def registro():
     try:
         return render_template('registro.html')
     except:
         return 'No pudieron cargarse los datos.'
 
 @app.route("/pares")
-def getPares():
-    
+def pares():
     try:
-        print('Estos son los pares disponibles:')
-        return jsonify(todos_los_pares())
+        return render_template('pares.html')
     except:
         return jsonify({'trace': traceback.format_exc()})
 
