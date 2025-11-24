@@ -1,5 +1,7 @@
 🇪🇸 Versión en Español
+
 Descripción del Proyecto
+
 Este es un bot de trading automatizado, programado en Python, diseñado para ejecutar operaciones de compra y venta en el mercado de Binance Futures basándose en una estrategia de análisis técnico de Medias Móviles (SMA). El bot utiliza un filtro de tendencia (ADX) y notifica todas las acciones y señales a través de Telegram.
 
 1. Requisitos Indispensables (Configuración de Credenciales)
