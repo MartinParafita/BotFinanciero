@@ -16,8 +16,9 @@ Para que el bot pueda leer datos del mercado, ejecutar órdenes y enviar alertas
     TELEGRAM TOKEN: Identificador del bot de alertas creado con @BotFather.
     
     TELEGRAM CHAT ID: El identificador numérico de tu chat personal para recibir notificaciones.
+   
 
-2. Funcionamiento de la Aplicación (Estrategia)
+3. Funcionamiento de la Aplicación (Estrategia)
 La lógica del bot se basa en una estrategia de seguimiento de tendencia que combina el cruce de medias móviles con un filtro de fuerza:
 
     Indicadores Utilizados
@@ -56,7 +57,9 @@ La lógica del bot se basa en una estrategia de seguimiento de tendencia que com
 ######################################################################################################
 
 🇺🇸 English Version
+
 Project Description
+
 This is an automated trading bot, programmed in Python, designed to execute buy and sell operations in the Binance Futures market based on a Moving Average (SMA) technical analysis strategy. The bot utilizes a trend filter (ADX) and notifies all actions and signals via Telegram.
 
 1. Essential Requirements (Credentials Setup)
@@ -71,8 +74,9 @@ For the bot to successfully read market data, execute orders, and send alerts, i
     TELEGRAM TOKEN: Identifier for the Telegram alert bot created with @BotFather.
     
     TELEGRAM CHAT ID: The numerical identifier of your personal chat to receive notifications.
+   
 
-2. Application Functionality (Strategy)
+3. Application Functionality (Strategy)
 The bot's logic is based on a high-probability trend-following strategy that combines moving average crosses with a strength filter:
 
     Indicators Used
