@@ -1,0 +1,6 @@
+# Archivos de entorno y claves de API
+.env
+# Archivos de base de datos de Python
+*.db
+# Caché de Python
+__pycache__/
