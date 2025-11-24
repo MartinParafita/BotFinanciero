@@ -1,15 +1,73 @@
 
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Bot Financiero</title>
-        <link rel="icon" href="Bot.ico">
-    </head>
-    <body>
-        <h1>Bienvenido al Bot Financiero</h1>        
-        <h2>Por favor registrate para poder comenzar a operar</h2>
-        <form action="{{url_for('registro')}}">
-            <input type="submit" value="Registrarse">
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Control - Trading Bot</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">🤖 Gestor de Bots de Trading</h1>
+
+    <div class="card p-4 shadow-sm mb-5">
+        <h4>Configurar Nueva Estrategia</h4>
+        <form action="/iniciar_bot" method="POST">
+            <div class="row">
+                <div class="col-md-4">
+                    <label class="form-label">Par (Symbol)</label>
+                    <select name="symbol" class="form-select">
+                        {% for par in lista_pares %}
+                            <option value="{{ par }}">{{ par }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Intervalo</label>
+                    <select name="interval" class="form-select">
+                        <option value="1h">1 Hora</option>
+                        <option value="4h">4 Horas</option>
+                        <option value="1d" selected>1 Día</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Cantidad</label>
+                    <input type="text" name="cantidad" class="form-control" value="0.001">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3 w-100">Iniciar Bot</button>
         </form>
-    </body>
+    </div>
+
+    <h3>Bots Ejecutándose Ahora</h3>
+    {% if activos %}
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Par</th>
+                    <th>Intervalo</th>
+                    <th>Estado</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for symbol, datos in activos.items() %}
+                <tr>
+                    <td>{{ symbol }}</td>
+                    <td>{{ datos.interval }}</td>
+                    <td><span class="badge bg-success">Corriendo</span></td>
+                    <td>
+                        <a href="/detener_bot/{{ symbol }}" class="btn btn-danger btn-sm">Detener</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-warning">No hay bots activos en este momento.</div>
+    {% endif %}
+</div>
+
+</body>
 </html>

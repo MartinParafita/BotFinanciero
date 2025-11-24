@@ -5,8 +5,8 @@ import sqlalchemy
 import pandas as pd
 import Tablas
 
-API_KEY = 'cidV4hzfstUlcvQh5v7ciaA7vSmmaWdHzfomQhESZJRiLqsN5PKEKmADgsgkPUEK'        #NOMBRE DE LA API DE BINANCE
-API_SECRET = 'Ddju4c7rg8U9GfypjTXrl9fSvOrXo0c0LXLZfp6yne2FZ2HiWc0brjIWOEd75RUH'     #CONTRASEÑA DE LA API DE BINANCE
+API_KEY = ''        #NOMBRE DE LA API DE BINANCE
+API_SECRET = ''     #CONTRASEÑA DE LA API DE BINANCE
 
 cliente = Client(API_KEY,API_SECRET, tld = 'com')                                   #NOS CONECTAMOS CON LA API DE BINANCE
 
@@ -136,6 +136,6 @@ if __name__ == '__main__':
 
     #med_movil_simple(activo,intervalo,cant_velas)
     print('----------------------------------------------------')
-    med_movil_exponencial(activo,intervalo,cant_velas)
+    #med_movil_exponencial(activo,intervalo,cant_velas)
     
     
